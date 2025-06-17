@@ -1,3 +1,5 @@
+#Create a library that is capable of adding, showing, and taking books using Classes and Objects.
+
 class Book:
     def __init__(self,name,author):
         self.name = name
