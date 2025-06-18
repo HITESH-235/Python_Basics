@@ -4,6 +4,7 @@ class Book:
     def __init__(self,name,author):
         self.name = name
         self.author = author
+        self.available = True
 
 
 class Library:
@@ -20,8 +21,12 @@ class Library:
         else:
             n = 1
             for x in self.books:
-                print(f"book no.{n} is: {x.name}, author: {x.author}")
-                n+=1
+                if x.available == True :
+                    print(f"book no.{n} is: {x.name}, author: {x.author}, status: Available")
+                    n+=1
+                else:
+                    print(f"book no.{n} is: {x.name}, author: {x.author}, status: Not Available")
+                    n+=1
 
     def take_book(self,name):
         if self.books == []:
@@ -29,13 +34,12 @@ class Library:
         else:
             for x in self.books:
                 if name == x.name:
-                    self.books.remove(x)
-                    return self.show()
+                    x.available = False
+                    return f"book named {x.name} marked as unavailable"
                 else:
                     pass
-            return "book not in library"    
-
-    
+            return "book not in library"
+        
 lib = Library()
 book1 = Book("book_1","x")
 book2 = Book("book_2","y")
@@ -47,5 +51,6 @@ lib.add_book(book2)
 lib.add_book(book3)
 lib.add_book(book4)
 lib.add_book(book5)
-lib.take_book("book_10")
-
+lib.take_book("book_3")
+print('\n')
+lib.show()
