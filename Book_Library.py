@@ -39,7 +39,14 @@ class Library:
                 else:
                     pass
             return "book not in library"
-        
+
+    def return_book(self,name):
+        for x in self.books:
+            if name == x.name:
+                x.available = True
+                return f"book named {x.name} marked as available"
+
+
 lib = Library()
 book1 = Book("book_1","x")
 book2 = Book("book_2","y")
@@ -51,6 +58,8 @@ lib.add_book(book2)
 lib.add_book(book3)
 lib.add_book(book4)
 lib.add_book(book5)
+
 lib.take_book("book_3")
 print('\n')
 lib.show()
+lib.return_book("book_3")
