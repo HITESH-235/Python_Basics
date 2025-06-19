@@ -3,7 +3,7 @@
 class Restaurant:
     lst = []
     def __init__(self):
-        pass
+        return
       
     def show_menu(self):
         n = 1
@@ -30,10 +30,10 @@ class Restaurant:
             for x in self.lst:
                 if x.name == name:
                     bill+=(x.price)*count
-                    print(f"{count}x {x.name} = /{(x.price)*count}")
-        print(f"Total amount: {bill}")
+                    print(f"{count}x {x.name} : -/{(x.price)*count}")
+        print(f"Total amount: -/{bill}")
 
-class MenuItem(Restaurant):
+class MenuItem():
     def __init__(self,name,price,category): #starter/maincourse/dessert
         self.name = name
         self.price = price
@@ -55,5 +55,5 @@ i11 = MenuItem("C2",25,'dessert')
 i12 = MenuItem("C3",29,'dessert')
 
 # Rest.show_menu()
-# Rest.show_categories()
+Rest.show_categories()
 Rest.Take_order({'C3':2, 'A1':3, "A4":4, "B2":2, "B5":5})
