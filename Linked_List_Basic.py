@@ -9,20 +9,20 @@ class Linked_list:
 
     def insert_at_beginning(self, data):
         node = Node(data)
-        node.next = self.head
-        self.head = node
+        node.next = self.head                               # Stores the nxt pointer as older head
+        self.head = node                                    # makes the new node a head
 
     def print_lst(self):
         if self.head is None:
             print("Linked List Empty!")
             return
 
-        itr = self.head
-        ll_str = ""
+        itr = self.head                                     # var to initiate loop
+        ll_str = ""                                         # str to store list nodes
 
-        while itr is not None:
+        while itr is not None:                              # till last node reached
             ll_str += str(itr.data) + "-->"
-            itr = itr.next
+            itr = itr.next                                  # node is now its next value (instead of +1)
 
         print("Linked List: ",ll_str)
         return
@@ -57,18 +57,18 @@ class Linked_list:
             return
 
         if index == 0:
-            if self.get_length() == 1:
+            if self.get_length() == 1:                      # case when only head exist and that needs to be removed
                 self.head = None
                 return
             else:
-                self.head = self.head.next
+                self.head = self.head.next                  # head is removed and crown given to next node
                 return
 
         count = 0
         itr = self.head
         while itr.next is not None:
-            if count == index-1:
-                itr.next = itr.next.next
+            if count == index-1:                            # when count reaches pos previous to target, 
+                itr.next = itr.next.next                    # 2 step next data is now 1 step next
                 return
             itr = itr.next
             count += 1
@@ -82,14 +82,14 @@ class Linked_list:
             self.insert_at_beginning()
             return
         
-        if index == self.get_length():
+        if index == self.get_length():                      # get_length return n+1 index (meaning insert at end)
             self.insert_at_end(data)
         count = 0
         itr = self.head
         while itr.next is not None:
             if count == index-1:
                 node = Node(data)
-                node.next = itr.next
+                node.next = itr.next                        # setting the new node pointer as next existing node
                 itr.next = node
                 return
             itr = itr.next
