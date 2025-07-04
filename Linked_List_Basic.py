@@ -11,6 +11,7 @@ class Linked_list:
         node = Node(data)
         node.next = self.head                               # Stores the nxt pointer as older head
         self.head = node                                    # makes the new node a head
+        return
 
     def print_lst(self):
         if self.head is None:
@@ -40,11 +41,13 @@ class Linked_list:
         if self.head is None:
             self.head = Node(data)
             self.head.next = None
+            return
 
         itr = self.head
         while itr.next is not None:
             itr = itr.next
         itr.next = Node(data)
+        return
 
     def insert_values_at_end(self,data_lst):
         for data in data_lst:
@@ -77,6 +80,7 @@ class Linked_list:
     def insert_at(self,index,data):
         if (index<0) or (index > self.get_length()):
             print("Index out of range!")
+            return
 
         if index == 0:
             self.insert_at_beginning()
@@ -84,6 +88,8 @@ class Linked_list:
         
         if index == self.get_length():                      # get_length return n+1 index (meaning insert at end)
             self.insert_at_end(data)
+            return
+        
         count = 0
         itr = self.head
         while itr.next is not None:
@@ -94,6 +100,7 @@ class Linked_list:
                 return
             itr = itr.next
             count += 1
+        return
 
 obj = Linked_list()
 obj.insert_at_beginning(36)
