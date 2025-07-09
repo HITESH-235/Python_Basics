@@ -17,12 +17,18 @@ class TreeNode:
 
     def get_level(self): # start from level 0 (root)
         level = 0
-        itr = self.parent # if 1 parent generation exist, level = 0
+        count = self.parent # if 1 parent generation exist, level = 0
 
-        while itr != None: # if no parent, then self = root, level = 0
+        while count != None: # if no parent, then self = root, level = 0
             level += 1
-            itr = itr.parent
+            count = count.parent
         return level
+
+    def is_leaf(self): # check if the node has no child or not so
+        if self.children == []:
+            return True
+        else:
+            return False
 
     def print_tree(self):
         spaces = " " * self.get_level() * 3  # 3 is just to visualise indentation more
