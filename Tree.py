@@ -10,6 +10,13 @@ class TreeNode:
         child.parent = self # form current self. as parent then child_class as child in next line
         self.children.append(child)
 
+    def get_root(self):
+        current = self
+
+        while current.parent != None:
+            current = current.parent
+        return current
+
     def add_children(self,child_lst):
         for x in child_lst:
             x.parent = self
@@ -32,12 +39,15 @@ class TreeNode:
 
     def print_tree(self):
         spaces = " " * self.get_level() * 3  # 3 is just to visualise indentation more
+
         if self.parent != None:
             x = ">"
         else:
             x = ""
+
         prefix = spaces + x
         print(prefix + self.data) # in first loop, root gets printed, then:
+
         # Recursion:
         if self.children:
             for child in self.children:
