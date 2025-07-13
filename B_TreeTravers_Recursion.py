@@ -21,6 +21,9 @@ class BinaryTree:
                 self.right.add_child(data)
 
     def in_order_traversal(self):           # left-> root-> right
+        if self.data is None:
+            return []
+
         data_lst = []                       # Empty list to store nodes
 
         # left subtree:
@@ -35,8 +38,11 @@ class BinaryTree:
             data_lst += self.right.in_order_traversal()
 
         return data_lst
-    
+
     def pre_order_traversal(self):
+        if self.data is None:
+            return []
+
         data_lst  = [self.data]
 
         if self.left != None:
@@ -46,8 +52,11 @@ class BinaryTree:
             data_lst += self.right.pre_order_traversal()
 
         return data_lst
-    
+
     def post_order_traversal(self):
+        if self.data is None:
+            return []
+
         data_lst = []
 
         if self.left != None:
