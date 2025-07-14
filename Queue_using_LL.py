@@ -34,7 +34,7 @@ class Q_LL:
         if self.is_empty() is True:
             print("Queue is empty")
             return
-        
+
         itr = self.start.data
         self.start = self.start.next
         print(itr,"Popped!")

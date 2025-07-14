@@ -4,12 +4,11 @@ class Node:
         self.next = None
 
 class Stck_LL:
-    
     def __init__(self,size):
         self.top = None                             # pointer moves opposite (top to bottom)
         self.size = size
         self.count = 0
-    
+
     def is_empty(self):
         return self.top is None                     # returns True or False
 
@@ -17,11 +16,12 @@ class Stck_LL:
         if self.top == None:                        # if no top, no stck exists, so make a new top
             self.top  = Node(data)
             return
-        
+
         if self.count == self.size:
             print("Stack Overflow!")
             return
-        new_node = Node(data)                       # new node with pointer towards top
+
+        new_node = Node(data)                       # new node with pointer towards top (top>lower>lower..)
         new_node.next = self.top
         self.top = new_node
         self.count += 1
@@ -31,7 +31,7 @@ class Stck_LL:
         if self.is_empty() is True:
             print("Stack is empty!")
             return
-        
+
         itr = self.top.data                         # since pop removes only top element, new top is node under it
         self.top = self.top.next
         print("Popped Node:",itr)
@@ -45,12 +45,13 @@ class Stck_LL:
 
         itr = self.top
         print("--------------")
+
         while itr is not None:
             print(itr.data)
             itr = itr.next
         print("--------------")
         return
-    
+
     def top_(self):
         if self.is_empty() is True:
             print("Stack is empty!")
@@ -58,7 +59,7 @@ class Stck_LL:
 
         print(self.top.data)
         return
-    
+
     def get_length(self):
         print(self.count)
         return
