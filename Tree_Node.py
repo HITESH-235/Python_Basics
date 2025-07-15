@@ -1,6 +1,6 @@
-class Node:
-    def __init__(self, data):
-        self.data = data
+class TreeNode:
+    def __init__(self, value):
+        self.value = value
         self.children = []
         self.parent = None
         
@@ -8,177 +8,140 @@ class Tree:
     def __init__(self):
         self.root = None
 
-    def node_find(self,data):
-
-        def helper(node):
-            if data == node.data:
+    def find_node(self, target_value):
+        def dfs(node):
+            if node.value == target_value:
                 return node
-
-            if node.children:
-                for x in node.children:
-                    recurs_var = helper(x)
-                    if recurs_var:
-                        return recurs_var
+            for child in node.children:
+                result = dfs(child)
+                if result:
+                    return result
             return None
 
-        return helper(self.root)
-    
-    def add_child(self, data, parent=None): # (child,parent)
-        new_node = Node(data)
+        return dfs(self.root)
 
-        if self.root and not parent:
-            print("Root already exists!")
+    def add_node(self, value, parent_value=None):
+        new_node = TreeNode(value)
+
+        if self.root and not parent_value:
+            print("Root already exists! Provide a parent for the new node")
             return
 
         if not self.root:
-            self.root = Node(data)
+            self.root = new_node
             return
 
-        if not parent:
-            print("Provide parent data as parameter first!")
-            return
-
-        parent_node = self.node_find(parent)
+        parent_node = self.find_node(parent_value)
         if not parent_node:
-            print(f"Parent:'{parent}' doesn't exists!")
+            print(f"Parent node:'{parent_value}' not found.")
             return
 
         parent_node.children.append(new_node)
         new_node.parent = parent_node
 
-    def get_level(self,data):
-        node = self.node_find(data)
-        level = 0
-
-        if node is None:
+    def get_node_level(self, value):
+        node = self.find_node(value)
+        if not node:
             return -1
 
-        while node.parent != None:
+        level = 0
+        while node.parent:
             node = node.parent
             level += 1
         return level
 
-    def print_tree(self):
+    def display_tree_recursive(self):
         if not self.root:
-            print("Empty Tree")
+            print("The tree is empty.")
             return
 
-        def helper(node):
-            spaces = " " * self.get_level(node.data) * 4 + (">" if node.parent else "")
+        def traverse(node):
+            indent = " " * self.get_node_level(node.value) * 4
+            prefix = ">" if node.parent else ""
+            print(f"{indent}{prefix}{node.value}")
+            for child in node.children:
+                traverse(child)
 
-            print(spaces + node.data)
+        traverse(self.root)
 
-            if node.children:
-                for x in node.children:
-                    helper(x)
-            return
-        helper(self.root)
-
-    def print_tree_stack(self):
+    def display_tree_stack_array(self):
         if not self.root:
-            print("Empty Tree")
+            print("The tree is empty.")
             return
 
-        stack = [[self.root,0]] # [node,level]
+        stack = [[self.root, 0]]
 
         while stack:
-            cur_node = stack.pop() # [0: data, 1:level]
-            node = cur_node[0]
-            level = cur_node[1]
-            spaces = " " * level * 4 + ('>' if node.parent else "")
+            node, level = stack.pop()
+            indent = " " * level * 4
+            prefix = ">" if node.parent else ""
+            print(f"{indent}{prefix}{node.value}")
 
-            print(spaces + node.data)
+            for child in reversed(node.children):
+                stack.append([child, level + 1])
 
-            if node.children:
-                for x in node.children[::-1]: # reversed to maintain order
-                    stack.append([x,level+1])
-
-    def print_tree_queue(self):
+    def display_tree_stack_linkedlist(self):
         if not self.root:
-            print("Empty Tree")
+            print("The tree is empty.")
             return
 
-        queue = Queue()
-        queue.enqueue([self.root,0]) # [node,level]
-        while not queue.is_empty():
-    
-            cur_node = queue.dequeue_right()
-            node = cur_node[0]
-            level = cur_node[1]
-            spaces = " " * level * 4 + ('>' if node.parent else "")
+        stack = CustomStack()
+        stack.push([self.root, 0])
 
-            print(spaces + node.data)
+        while not stack.is_empty():
+            node, level = stack.pop()
+            indent = " " * level * 4
+            prefix = ">" if node.parent else ""
+            print(f"{indent}{prefix}{node.value}")
 
-            if node.children:
-                for x in node.children[::-1]:
-                    queue.enqueue([x,level+1])
+            for child in reversed(node.children):
+                stack.push([child, level + 1])
 
-class Q_Node: # Custom Queue class
-    def __init__(self,value):
-        self.value = value
+
+class StackNode:
+    def __init__(self, data):
+        self.data = data
         self.next = None
 
-class Queue:
+class CustomStack:
     def __init__(self):
-        self.end = None
-        self.start = None
+        self.top = None
 
-    def enqueue(self,data):
-        new_node = Q_Node(data)
-        if not self.end:
-            self.start = new_node
-            self.end = new_node
-            return
+    def push(self, value):
+        new_node = StackNode(value)
+        new_node.next = self.top
+        self.top = new_node
 
-        self.end.next = new_node
-        self.end = new_node
-        return
-
-    def dequeue_right(self):
-        if not self.start:
+    def pop(self):
+        if not self.top:
             return None
-
-        # when only one element:
-        if self.start == self.end:
-            popped_node = self.end.value
-            self.start = None
-            self.end = None
-            return popped_node
-
-        itr = self.start
-        while itr.next != self.end:
-            itr = itr.next
-
-        popped_node = self.end.value
-        self.end = itr
-        self.end.next = None
-
-        return popped_node
+        value = self.top.data
+        self.top = self.top.next
+        return value
 
     def is_empty(self):
-        return self.start is None
+        return self.top is None
 
-root = Tree()
-root.add_child("Electronics") # root
 
-# root.add_child("Electrons") # Root already exists
-root.add_child("Laptop","Electronics") # (child,parent)
-root.add_child("Lenovo","Laptop")
-root.add_child('Ideapad','Lenovo')
-root.add_child('Slim','Lenovo')
-root.add_child('Asus','Laptop')
-# root.add_child('Dummy_child','Dummy_parent') # Wrong parent case
-root.add_child('Phone','Electronics')
-root.add_child('Samsung','Phone')
-root.add_child('Iphone','Phone')
+# Example usage:
+tree = Tree()
+tree.add_node("Electronics")
+tree.add_node("Laptop", "Electronics")
+tree.add_node("Lenovo", "Laptop")
+tree.add_node("Ideapad", "Lenovo")
+tree.add_node("Slim", "Lenovo")
+tree.add_node("Asus", "Laptop")
+tree.add_node("Phone", "Electronics")
+tree.add_node("Samsung", "Phone")
+tree.add_node("Iphone", "Phone")
 
-print(root.get_level("Electronics"))
+print("Level of 'Electronics'(Root):", tree.get_node_level("Electronics"))
 
-print("\nTree:")
-root.print_tree()
+print("\nTree (Recursive Display):")
+tree.display_tree_recursive()
 
-print("\nTree by Stack method:")
-root.print_tree_stack()
+print("\nTree (Stack using Array):")
+tree.display_tree_stack_array()
 
-print("\nTree by Queue method:")
-root.print_tree_queue()
+print("\nTree (Stack using LinkedList):")
+tree.display_tree_stack_linkedlist()
