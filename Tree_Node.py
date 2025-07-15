@@ -4,27 +4,6 @@ class Node:
         self.children = []
         self.parent = None
         
-    def get_level(self):
-        level = 0
-        itr = self
-        while itr.parent != None:
-            level += 1
-            itr = itr.parent
-        return level
-
-    def print_tree(self):
-        indentation = " " * (self.get_level()) * 4
-        itr = self
-        if itr.parent != None:
-            indentation +=  ">"
-
-        print(indentation+self.data)
-
-        if itr.children != []:
-            for x in itr.children:
-                x.print_tree()
-        return
-
 class Tree:
     def __init__(self):
         self.root = None
@@ -44,7 +23,7 @@ class Tree:
 
         return helper(self.root)
     
-    def add_child(self, data, parent=None):
+    def add_child(self, data, parent=None): # (child,parent)
         new_node = Node(data)
 
         if self.root != None and parent is None:
@@ -67,10 +46,24 @@ class Tree:
 
     def get_level(self,data):
         node = self.node_find(data)
-        return node.get_level()
+        level = 0
+        while node.parent != None:
+            node = node.parent
+            level += 1
+        return level
 
     def print_tree(self):
-        self.root.print_tree()
+        string = ""
+        def helper(node):
+            spaces = " " * self.get_level(node.data) * 4
+            if node.parent != None:
+                spaces += ">"
+            print(spaces + node.data)
+            if node.children != None:
+                for x in node.children:
+                    helper(x)
+            return
+        helper(self.root)
 
 root = Tree()
 root.add_child("Electronics") # root
