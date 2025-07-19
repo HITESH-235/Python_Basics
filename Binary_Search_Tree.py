@@ -93,7 +93,7 @@ class BinarySearchTree:
         stack = CustomStack()
         current = self.root
         result = []
-        
+
         while current or not stack.is_empty():
             if current:
                 stack.push(current)
@@ -159,7 +159,23 @@ class BinarySearchTree:
             if temp.right:
                 stack.push(temp.right)
         return result[::-1]
-        
+
+
+    def bfs(self):
+        if not self.root:
+            return None
+        queue = CustomQueue()
+        queue.enqueue(self.root)
+        result = []
+
+        while not queue.is_empty():
+            temp = queue.dequeue()
+            result.append(temp.data)
+            if temp.left:
+                queue.enqueue(temp.left)
+            if temp.right:
+                queue.enqueue(temp.right)
+        return result
 
 class StackNode:
     def __init__(self, data):
@@ -186,58 +202,53 @@ class CustomStack:
         return self.top is None
 
 
+class QueueNode:
+    def __init__(self,data):
+        self.data = data
+        self.next = None 
+
+class CustomQueue:
+    def __init__(self):
+        self.start = None
+        self.end = None
+
+    def enqueue(self,value):
+        new_node = QueueNode(value)
+        if self.is_empty():
+            self.start = new_node
+            self.end = new_node
+            return
+        self.end.next = new_node
+        self.end = self.end.next
+        return
+
+    def dequeue(self):
+        if self.is_empty():
+            return None
+        elif self.start == self.end:
+            popped_node = self.start.data
+            self.start = None
+            self.end = None
+            return popped_node
+        else:
+            popped_node = self.start.data
+            self.start = self.start.next
+            return popped_node
+
+    def is_empty(self):
+        return self.start is None
+
+
 # Example Usage:
 obj = BinarySearchTree()
-obj.insert_child(104857)
-obj.insert_child(-948572)
-obj.insert_child(583920)
-obj.insert_child(34857)
-obj.insert_child(-1000000)
-obj.insert_child(847293)
-obj.insert_child(0)
-obj.insert_child(127)
-obj.insert_child(94857)
-obj.insert_child(-483920)
-obj.insert_child(939483)
-obj.insert_child(1000000)
-obj.insert_child(-123456)
-obj.insert_child(384756)
-obj.insert_child(294857)
-obj.insert_child(192837)
-obj.insert_child(-394857)
-obj.insert_child(8472)
-obj.insert_child(38742)
-obj.insert_child(918273)
-obj.insert_child(-100)
-obj.insert_child(50000)
-obj.insert_child(600000)
-obj.insert_child(-204857)
-obj.insert_child(700000)
-obj.insert_child(808080)
-obj.insert_child(909090)
-obj.insert_child(-111111)
-obj.insert_child(222222)
-obj.insert_child(-333333)
-obj.insert_child(444444)
-obj.insert_child(555555)
-obj.insert_child(-666666)
-obj.insert_child(777777)
-obj.insert_child(888888)
-obj.insert_child(-999999)
-obj.insert_child(123456)
-obj.insert_child(234567)
-obj.insert_child(345678)
-obj.insert_child(456789)
-obj.insert_child(-567890)
-obj.insert_child(678901)
-obj.insert_child(-789012)
-obj.insert_child(890123)
-obj.insert_child(901234)
-obj.insert_child(-1234)
-obj.insert_child(4321)
-obj.insert_child(876543)
-obj.insert_child(135791)
-obj.insert_child(246802)
+obj.insert_child(10)
+obj.insert_child(5)
+obj.insert_child(3)
+obj.insert_child(2)
+obj.insert_child(4)
+obj.insert_child(12)
+obj.insert_child(9)
+obj.insert_child(14)
 print("In-Order :", obj.in_order_traversal(),"\n")
 print("In-Order (DFS,Linear):",obj.dfs_inorder_linear(),"\n")
 print("In-Order (DFS,Quadratic):", obj.dfs_inorder_quadratic(),"\n")
@@ -246,4 +257,5 @@ print("Pre-Order :", obj.pre_order_traversal(),"\n")
 print("Pre-Order (DFS):", obj.dfs_preorder(),"\n")
 
 print("Post-Order :", obj.post_order_traversal(),"\n")
-print("Post_Order (DFS):", obj.dfs_postorder())
+print("Post_Order (DFS):", obj.dfs_postorder(),"\n")
+print("Using Queue (BFS):", obj.bfs())
